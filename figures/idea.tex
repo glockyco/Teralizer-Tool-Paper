@@ -1,0 +1,90 @@
+% Fig. 1: test generalization with Teralizer on the test fullApproval of the running example, drawn at
+% the full text width of IEEEtran conference papers (516 pt). A Source comment stands above each panel.
+\begin{tikzpicture}[paperfig]
+\draw[rounded corners=4pt, fill=black!3, draw=black!20, line width=0.4pt] (0,0) rectangle (516,-176.6);
+\draw[panel] (5,-5) rectangle (208,-171.6);
+\draw[panel] (217,-5) rectangle (511,-66.6);
+\draw[panel] (217,-74.6) rectangle (511,-171.6);
+\draw[flow] (208.8,-36) -- (216.4,-36);
+\draw[flow] (364,-67.4) -- (364,-74);
+
+% (1) the method under test with the refactoring, and the unit test
+% Source: demo/loan/src/main/java/bank/LoanPolicy.java (lines 4 to 11) for the method, and
+% demo/loan/src/test/java/bank/LoanPolicyTest.java (lines 8 to 10) for the test. The removed lines are
+% lines 8 to 10 of that method, and the added lines are lines 8 and 9 of demo/refactoring/LoanPolicy.java,
+% with which demo/run.sh replaces the method. The darker boxes mark the condition that the refactoring
+% changes. demo/output/regression.txt shows that the three original tests pass after the refactoring.
+\node[num] at (14,-14) {1};
+\node[ttl] at (21,-14) {Method under test and unit test};
+
+\draw[subbox] (9,-23) rectangle (204,-107.6);
+\node[hdr] at (12.5,-29.5) {Method under test};
+\node[tag, anchor=east, text=black!65] at (200.5,-29.5) {$-$/$+$: refactoring};
+\fill[delhl] (10.2,-80.6) rectangle (202.8,-57.8);
+\fill[addhl] (10.2,-95.8) rectangle (202.8,-80.6);
+\foreach \y in {-61.6, -69.2, -76.8} \node[code] at (12.5,\y) {-};
+\foreach \y in {-84.4, -92.0} \node[code] at (12.5,\y) {+};
+\node[code] at (18.6,-38.8) {static final int FULL = 60, PARTIAL = 5;};
+\node[code] at (18.6,-46.4) {public static int approvedAmount(int score, int amount) \{};
+\node[code] at (18.6,-54.0) {\ \ if (amount <= 0) throw new IllegalArgumentException();};
+\node[code] at (18.6,-61.6) {\ \ if (\slip{delmark}{score >= 80}) return Math.min(amount, FULL);};
+\node[code] at (18.6,-69.2) {\ \ if (score >= 50) return Math.min(amount, PARTIAL);};
+\node[code] at (18.6,-76.8) {\ \ return 0;};
+\node[code] at (18.6,-84.4) {\ \ int limit = \slip{addmark}{score > 80} ? FULL : score >= 50 ? PARTIAL : 0;};
+\node[code] at (18.6,-92.0) {\ \ return Math.min(amount, limit);};
+\node[code] at (18.6,-99.6) {\}};
+
+\draw[subbox] (9,-111.6) rectangle (204,-148.6);
+\node[hdr] at (12.5,-118.1) {Unit test};
+\node[tag, anchor=east, text=black!65] at (200.5,-118.1) {validates a single input-output pair};
+\node[code] at (12.5,-127.0) {@Test void fullApproval() \{};
+\node[code] at (12.5,-134.6) {\ \ assertEquals(\colorbox{outhl}{20}, LoanPolicy.approvedAmount(\colorbox{inhl}{90, 20}));};
+\node[code] at (12.5,-142.2) {\}};
+
+\node[tag] at (9,-156.1) {Before the refactoring: \textcolor{green!35!black}{\ding{51}\ passes}};
+\node[tag] at (9,-164.6) {After the refactoring: \textcolor{green!35!black}{\ding{51}\ passes}, i.e., the \textbf{regression is not detected}};
+
+% (2) the specification that Teralizer extracts
+% Source: demo/output/specs/bank.LoanPolicyTest.fullApproval.2.jpf.symbolic.input.json (the path
+% condition) and ...symbolic.output.json (the symbolic output), and
+% sections/02-background.tex of the Teralizer paper (Symbolic Analysis for Specification Extraction)
+% for what the two elements describe and how they are extracted.
+\node[num] at (226,-14) {2};
+\node[ttl] at (233,-14) {Input/output specification extracted by \Teralizer{}};
+
+\node[hdr] at (221,-29) {Path condition};
+\node[spec, fill=inhl] at (273,-29) {\textit{amount} > 0 \ $\land$\ \ \textit{score} $\ge$ 80 \ $\land$\ \ \textit{amount} $\le$ 60};
+\node[tag, text=black!65] at (410,-29) {inputs on the same execution path};
+\node[hdr] at (221,-42.5) {Symbolic output};
+\node[spec, fill=outhl] at (273,-42.5) {\textit{amount}};
+\node[tag, text=black!65] at (410,-42.5) {expected output for these inputs};
+\node[tag, text=black!65] at (221,-57) {Extracted from the original implementation through single-path symbolic analysis of the test execution.};
+
+% (3) the generalized test and what it detects
+% Source: demo/output/generated/_LoanPolicyTest_Generalized_fullApproval_2_Test.java. The panel shows
+% the test method (lines 345 to 351) in simplified form: the ranges that TestParametersSupplier
+% (lines 367 to 405) implements are written as jqwik annotations, and the parameter object, the
+% package qualifiers and the recording of the tested inputs are left out. The two results are those of
+% demo/output/adoption.txt (passes for the original implementation) and demo/output/regression.txt
+% (fails after the refactoring).
+\node[num] at (226,-84) {3};
+\node[ttl] at (233,-84) {Generalized test created by \Teralizer{} (simplified)};
+
+\draw[subbox] (221,-93) rectangle (431,-144.5);
+\node[code] at (224.5,-100.6) {@Property};
+\node[code] at (224.5,-108.2) {void fullApproval(};
+\node[code] at (224.5,-115.8) {\ \ \ \ @ForAll \colorbox{inhl}{@IntRange(min = 80)} int score,};
+\node[code] at (224.5,-123.4) {\ \ \ \ @ForAll \colorbox{inhl}{@IntRange(min = 1, max = 60)} int amount) \{};
+\node[code] at (224.5,-131.0) {\ \ assertEquals(\colorbox{outhl}{amount}, LoanPolicy.approvedAmount(score, amount));};
+\node[code] at (224.5,-138.6) {\}};
+
+\fill[inhl] (437,-114.5) rectangle (442,-109.5);
+\node[tag] at (445,-112) {generated inputs satisfy};
+\node[tag] at (445,-119.4) {the path condition};
+\fill[outhl] (437,-130.5) rectangle (442,-125.5);
+\node[tag] at (445,-128) {symbolic output replaces};
+\node[tag] at (445,-135.4) {the expected value};
+
+\node[tag] at (221,-156.1) {Before the refactoring: \textcolor{green!35!black}{\ding{51}\ passes}};
+\node[tag] at (221,-164.6) {After the refactoring: \textcolor{red!65!black}{\ding{55}\ fails} for \textit{score} = 80, \textit{amount} = 60 (expected 60 but was 5), i.e., the \textbf{regression is detected}};
+\end{tikzpicture}

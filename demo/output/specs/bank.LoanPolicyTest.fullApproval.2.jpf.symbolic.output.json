@@ -1,0 +1,5 @@
+{
+  "_type": "Variable",
+  "name": "amount",
+  "domain": "INTEGER"
+}

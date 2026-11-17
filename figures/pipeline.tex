@@ -1,0 +1,87 @@
+% Fig. 2: the five stages of Teralizer and their results for the three unit tests of the running example,
+% drawn at the full text width of IEEEtran conference papers (516 pt). The columns of the results stand below
+% the stages that produce them.
+\begin{tikzpicture}[paperfig,
+  sname/.style={anchor=west, inner sep=0pt, align=left, font=\sffamily\bfseries\fontsize{6.3}{7.2}\selectfont},
+  tool/.style={tag, text=black!60},
+  colhdr/.style={anchor=west, inner sep=0pt, font=\sffamily\fontsize{5.4}{6.3}\selectfont, text=black!60},
+  cell/.style={anchor=west, inner sep=0pt, align=left, font=\sffamily\fontsize{5.7}{7.0}\selectfont},
+  pc/.style={anchor=west, align=left, inner xsep=2.2pt, inner ysep=1.5pt, rounded corners=1.2pt, fill=inhl,
+    font=\sffamily\fontsize{5.7}{6.8}\selectfont},
+  outval/.style={anchor=west, inner xsep=2.2pt, inner ysep=1.3pt, rounded corners=1.2pt,
+    font=\sffamily\fontsize{5.7}{6.8}\selectfont},
+  rowcode/.style={anchor=west, inner sep=0pt, font=\fontfamily{lmtt}\fontsize{5.6}{6.7}\selectfont},
+  nextstage/.style={-{Triangle[length=2.6pt, width=3.8pt]}, line width=0.8pt, black!60},
+  guide/.style={black!13, line width=0.3pt},
+]
+\draw[rounded corners=4pt, fill=black!3, draw=black!20, line width=0.4pt] (0,0) rectangle (516,-130.5);
+
+% The input and the five stages with the tool that each stage uses
+% Source: sections/03-approach-00-intro.tex of the Teralizer paper (the figure of the five-stage pipeline and
+% the tools that the stages build on), and sections/03-approach-05-reduction.tex of that paper (Stage 5 is
+% optional)
+\draw[panel, fill=black!6] (5,-5) rectangle (61,-30);
+\node[sname] at (9.5,-13.2) {Java project};
+\node[tool] at (9.5,-22.6) {with JUnit tests};
+\foreach \x/\w/\n/\name/\uses in {
+    67/80/1/{Test and Assertion\\Analysis}/Spoon,
+    153/80/2/{Tested Method\\Identification}/Spoon,
+    239/108/3/{Specification\\Extraction}/SPF,
+    353/86/4/{Generalized Test\\Creation}/jqwik,
+    445/66/5/{Test Suite\\Reduction}/{PIT, optional}} {
+  \draw[panel] (\x,-5) rectangle (\x+\w,-30);
+  \node[num] at (\x+8.5,-10.9) {\n};
+  \node[sname] at (\x+15.5,-14.3) {\name};
+  \node[tool] at (\x+15.5,-26) {\uses};
+}
+\foreach \x in {61.7, 147.7, 233.7, 347.7, 439.7} \draw[nextstage] (\x,-17.5) -- (\x+4.8,-17.5);
+
+% The results of the stages for the three unit tests
+\draw[panel] (5,-34) rectangle (511,-125.5);
+\draw[guide] (5,-44.5) -- (511,-44.5);
+\foreach \y in {-71.5, -98.5} \draw[guide] (5,\y) -- (511,\y);
+\foreach \x in {64, 236, 350, 442} \draw[guide] (\x,-34) -- (\x,-125.5);
+\node[colhdr] at (8.5,-39.5) {Unit test};
+\node[colhdr] at (70.5,-39.5) {Assertion with MUT call (underlined)};
+\node[colhdr] at (242.5,-39.5) {Path condition and output from SPF};
+\node[colhdr] at (356.5,-39.5) {Oracle for the input partition};
+\node[colhdr] at (448.5,-39.5) {Additional mutants};
+
+% Source: demo/loan/src/test/java/bank/LoanPolicyTest.java (lines 8 to 16) for the tests and their assertions,
+% demo/output/outcomes.txt for the MUT, the kind of output and the outcome of Stage 4,
+% demo/output/specs/*.symbolic.input.json for the path conditions, *.symbolic.output.json and
+% *.concrete.output.json for the outputs, lines 9 and 10 of demo/loan/src/main/java/bank/LoanPolicy.java for
+% how the method returns the two concrete outputs, and demo/output/mutants.txt for the mutant that only the
+% generalized test of fullApproval detects. Whether a test is retained follows from the rule of Stage 5 in
+% sections/03-approach-05-reduction.tex of the Teralizer paper.
+
+% fullApproval
+\node[rowcode] at (8.5,-58) {fullApproval};
+\node[rowcode] at (70.5,-58) {assertEquals(\slip{outhl}{20}, \underline{LoanPolicy.approvedAmount(\slip{inhl}{90, 20})});};
+\node[pc] at (240.5,-53.7) {\textit{amount} > 0 \,$\land$\, \textit{score} $\ge$ 80\\$\land$\, \textit{amount} $\le$ 60};
+\node[cell] at (242.7,-66.9) {output:};
+\node[outval, fill=outhl] at (262.5,-66.9) {\textit{amount}};
+\node[cell, text=black!60] at (288,-66.9) {(symbolic)};
+\node[cell] at (356.5,-58) {\textcolor{green!35!black}{\ding{51}}\ symbolic output\\$\rightarrow$ generalized test (Fig.~\ref{fig:idea})};
+\node[cell] at (448.5,-58) {\textcolor{green!35!black}{\ding{51}}\ 1 additional mutant\\$\rightarrow$ retained};
+
+% partialApproval
+\node[rowcode] at (8.5,-85) {partialApproval};
+\node[rowcode] at (70.5,-85) {assertEquals(\slip{outhl}{5}, \underline{LoanPolicy.approvedAmount(\slip{inhl}{60, 8})});};
+\node[pc] at (240.5,-80.7) {\textit{amount} > 0 \,$\land$\, \textit{score} < 80\\$\land$\, \textit{score} $\ge$ 50 \,$\land$\, \textit{amount} > 5};
+\node[cell] at (242.7,-93.9) {output:};
+\node[outval, fill=black!9] at (262.5,-93.9) {5};
+\node[cell, text=black!60] at (273,-93.9) {(concrete)};
+\node[cell] at (356.5,-85) {\textcolor{red!65!black}{\ding{55}}\ output 5 is returned via\\\code{Math.min}, not as a literal\\$\rightarrow$ excluded};
+\node[cell, text=black!60] at (448.5,-85) {--};
+
+% rejection
+\node[rowcode] at (8.5,-112) {rejection};
+\node[rowcode] at (70.5,-112) {assertEquals(\slip{outhl}{0}, \underline{LoanPolicy.approvedAmount(\slip{inhl}{30, 1})});};
+\node[pc] at (240.5,-107.7) {\textit{amount} > 0 \,$\land$\, \textit{score} < 80\\$\land$\, \textit{score} < 50};
+\node[cell] at (242.7,-120.9) {output:};
+\node[outval, fill=black!9] at (262.5,-120.9) {0};
+\node[cell, text=black!60] at (273,-120.9) {(concrete)};
+\node[cell] at (356.5,-112) {\textcolor{green!35!black}{\ding{51}}\ output 0 is returned\\as a literal\\$\rightarrow$ generalized test};
+\node[cell] at (448.5,-112) {\textcolor{red!65!black}{\ding{55}}\ no additional mutant\\$\rightarrow$ not retained};
+\end{tikzpicture}

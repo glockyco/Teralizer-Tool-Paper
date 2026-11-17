@@ -1,0 +1,10 @@
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0 -- in bank.LoanPolicyTest
+    expected: <60> but was: <5>
+tries = 4                     | # of calls to property
+  arg0: TestParameters{score=80,amount=60}
+[ERROR] Tests run: 1, Failures: 1, Errors: 0, Skipped: 0 <<< FAILURE! -- in bank._LoanPolicyTest_Generalized_fullApproval_2_Test
+org.opentest4j.AssertionFailedError: expected: <60> but was: <5>
+tries = 200                   | # of calls to property
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0 -- in bank._LoanPolicyTest_Generalized_rejection_1_Test
+[ERROR]   _LoanPolicyTest_Generalized_fullApproval_2_Test.fullApproval:350 expected: <60> but was: <5>
+[ERROR] Tests run: 5, Failures: 1, Errors: 0, Skipped: 0

@@ -1,0 +1,93 @@
+% Fig. 2: mutation scores and total runtimes of EvoSuite alone and of EvoSuite followed by Teralizer,
+% drawn at the column width of IEEEtran conference papers (252 pt).
+% Source: the Pareto points of analysis/reports/rq4.md in the Teralizer repository (detection in
+% percent, runtime in seconds), and for EvoSuite with 60 s on EqBench, which is not on the front,
+% sections/04-evaluation-07-rq4.tex of the Teralizer paper (51.6% in 55,075 s). The same section
+% gives the two comparisons that the left plot marks. The layout follows
+% talks/components/ParetoPlot.vue of the PhD seminar talk.
+% Coordinates are (runtime in 1000 s, mutation score in percent). Each scope maps them to its plot area.
+\begin{tikzpicture}[x=1pt, y=1pt, font=\sffamily\fontsize{6.2}{7.2}\selectfont,
+  grid/.style={black!12, line width=0.3pt},
+  axis/.style={black!55, line width=0.4pt},
+  tick/.style={inner sep=0pt, text=black!75},
+  name/.style={inner sep=0pt, anchor=north west, font=\sffamily\bfseries\fontsize{6.6}{7.6}\selectfont},
+  chain/.style={line width=0.9pt, line join=round},
+  b1/.style={color=effone}, b10/.style={color=efften}, b60/.style={color=effsixty},
+  alone/.style={fill=white, line width=0.9pt},
+  gain/.style={black, line width=0.5pt, -{Triangle[length=2.6pt, width=3pt]}, shorten <=3.4pt, shorten >=3pt},
+  note/.style={inner sep=0pt, font=\sffamily\bfseries\fontsize{6.2}{7}\selectfont},
+  dot/.pic={\fill (0,0) circle[radius=1.7pt];},
+  sq/.pic={\fill (-1.5pt,-1.5pt) rectangle (1.5pt,1.5pt);},
+  tri/.pic={\fill (-1.9pt,-1.3pt) -- (1.9pt,-1.3pt) -- (0,2pt) -- cycle;},
+]
+% Legend
+% Source: the columns EvoSuite and Teralizer of the two tables of Pareto points in analysis/reports/rq4.md
+\useasboundingbox (0,-5) rectangle (252,111);
+\node[tick, anchor=west] at (0,106) {EvoSuite search budget per class:};
+\draw[b1, alone] (104,106) circle[radius=2.1pt];
+\node[tick, anchor=west] at (108.5,106) {1\,s};
+\draw[b10, alone] (123,103.9) rectangle (127.2,108.1);
+\node[tick, anchor=west] at (130,106) {10\,s};
+\draw[b60, alone] (148,104) -- (152.8,104) -- (150.4,108.4) -- cycle;
+\node[tick, anchor=west] at (155.5,106) {60\,s};
+\node[tick, anchor=west] at (0,97) {Outlined markers: EvoSuite alone. Filled markers: EvoSuite followed by \Teralizer{}.};
+
+\node[tick, rotate=90] at (3,49) {mutation score};
+
+% EqBench: 6 h to 27 h on 126 pt, 47.4% to 55.6% on 72 pt
+% Source: the table "Pareto points for eqbench" of analysis/reports/rq4.md, and
+% sections/04-evaluation-07-rq4.tex of the Teralizer paper for EvoSuite with 60 s (51.6% in 55,075 s)
+\begin{scope}[shift={(-12,-400.2)}, x=1.6667pt, y=8.7805pt]
+  \foreach \det in {48, 50, 52, 54} {
+    \draw[grid] (21.6,\det) -- (97.2,\det);
+    \node[tick, anchor=east] at (20.1,\det) {\det\%};}
+  \draw[axis] (21.6,47.4) -- (97.2,47.4);
+  \foreach \hours/\ks in {10/36, 15/54, 20/72, 25/90}
+    \node[tick, anchor=north] at (\ks,46.99) {\hours\,h};
+  \node[tick, anchor=north] at (59.4,46.0) {total runtime};
+  \node[name] at (23,55.55) {EqBench};
+
+  \draw[chain, b1] (26.479,48.1) -- (36.728,50.7) -- (37.457,51.4) -- (37.532,51.7);
+  \draw[chain, b10] (29.861,50.6) -- (41.525,51.9) -- (42.256,53.6) -- (45.398,53.8) -- (48.269,53.8) -- (62.938,54.1);
+  \draw[chain, b60] (55.075,51.6) -- (68.093,54.5) -- (68.782,54.7) -- (75.081,54.8) -- (93.017,55.0);
+  \foreach \point in {(36.728,50.7), (37.457,51.4), (37.532,51.7)} \pic[b1] at \point {dot};
+  \foreach \point in {(41.525,51.9), (42.256,53.6), (45.398,53.8), (48.269,53.8), (62.938,54.1)} \pic[b10] at \point {sq};
+  \foreach \point in {(68.093,54.5), (68.782,54.7), (75.081,54.8), (93.017,55.0)} \pic[b60] at \point {tri};
+  \draw[b1, alone] (26.479,48.1) circle[radius=2.1pt];
+  \draw[b10, alone] (29.861,50.6) +(-2.1pt,-2.1pt) rectangle +(2.1pt,2.1pt);
+  \draw[b60, alone] (55.075,51.6) +(-2.4pt,-1.7pt) -- +(2.4pt,-1.7pt) -- +(0,2.6pt) -- cycle;
+
+  % The two generalized test suites that the text compares with EvoSuite at 60 s
+  % Source: sections/04-evaluation-07-rq4.tex of the Teralizer paper (0.1 percentage points higher detection with
+  % 31.9% lower runtime, and 2.2 percentage points in 12.4% less runtime)
+  \draw[gain] (55.075,51.6) -- (37.532,51.7);
+  \draw[gain] (55.075,51.6) -- (48.269,53.8);
+  \node[note, anchor=south east] at ([xshift=-2.6pt, yshift=1pt]37.532,51.7) {A};
+  \node[note, anchor=south] at ([yshift=2.8pt]48.269,53.8) {B};
+  \node[tick, anchor=south east, align=left, fill=white, inner sep=1.5pt] at (96.9,47.57)
+    {Compared to EvoSuite with 60\,s:\\\textbf{A}: +0.1 pp in 31.9\% less time\\\textbf{B}: +2.2 pp in 12.4\% less time};
+\end{scope}
+
+% Apache Commons: 1 h to 4.7 h on 78 pt, 56.5% to 59.8% on 72 pt
+% Source: the table "Pareto points for commons-utils" of analysis/reports/rq4.md
+\begin{scope}[shift={(150.92,-1216.73)}, x=5.8559pt, y=21.818pt]
+  \foreach \det in {57, 58, 59} {
+    \draw[grid] (3.6,\det) -- (16.92,\det);
+    \node[tick, anchor=east] at (3.27,\det) {\det\%};}
+  \draw[axis] (3.6,56.5) -- (16.92,56.5);
+  \foreach \hours/\ks in {2/7.2, 3/10.8, 4/14.4}
+    \node[tick, anchor=north] at (\ks,56.335) {\hours\,h};
+  \node[tick, anchor=north] at (10.26,55.936) {total runtime};
+  \node[name] at (3.85,59.777) {Apache Commons};
+
+  \draw[chain, b1] (4.649,56.8) -- (7.294,57.9);
+  \draw[chain, b10] (5.597,57.3) -- (10.445,58.1) -- (10.603,58.4) -- (11.082,58.4) -- (13.270,58.5);
+  \draw[chain, b60] (10.240,58.1) -- (13.939,59.3) -- (14.728,59.4) -- (15.736,59.5);
+  \pic[b1] at (7.294,57.9) {dot};
+  \foreach \point in {(10.445,58.1), (10.603,58.4), (11.082,58.4), (13.270,58.5)} \pic[b10] at \point {sq};
+  \foreach \point in {(13.939,59.3), (14.728,59.4), (15.736,59.5)} \pic[b60] at \point {tri};
+  \draw[b1, alone] (4.649,56.8) circle[radius=2.1pt];
+  \draw[b10, alone] (5.597,57.3) +(-2.1pt,-2.1pt) rectangle +(2.1pt,2.1pt);
+  \draw[b60, alone] (10.240,58.1) +(-2.4pt,-1.7pt) -- +(2.4pt,-1.7pt) -- +(0,2.6pt) -- cycle;
+\end{scope}
+\end{tikzpicture}

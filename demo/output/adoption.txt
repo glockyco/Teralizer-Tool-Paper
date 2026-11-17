@@ -1,0 +1,11 @@
+23a24,29
+>         <dependency>
+>             <groupId>net.jqwik</groupId>
+>             <artifactId>jqwik</artifactId>
+>             <version>1.8.5</version>
+>             <scope>test</scope>
+>         </dependency>
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0 -- in bank.LoanPolicyTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0 -- in bank._LoanPolicyTest_Generalized_fullApproval_2_Test
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0 -- in bank._LoanPolicyTest_Generalized_rejection_1_Test
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0

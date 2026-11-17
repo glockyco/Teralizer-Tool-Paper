@@ -1,0 +1,7 @@
+      test       | tested_method  | output_spec_class | output_is_literal |      variant       | generalized |      widening_refusal_code       | encoded_constraints | constraints 
+-----------------+----------------+-------------------+-------------------+--------------------+-------------+----------------------------------+---------------------+-------------
+ fullApproval    | approvedAmount | SYMBOLIC          | f                 | IMPROVED_200_TRIES | t           |                                  |                   3 |           3
+ partialApproval | approvedAmount | NULL_CONCRETE     | f                 | IMPROVED_200_TRIES | f           | NULL_CONCRETE_OUTPUT_NOT_LITERAL |                     |            
+ rejection       | approvedAmount | NULL_CONCRETE     | t                 | IMPROVED_200_TRIES | t           |                                  |                   3 |           3
+(3 rows)
+

@@ -1,0 +1,65 @@
+{
+  "_type": "Operation",
+  "left": {
+    "_type": "Operation",
+    "left": {
+      "_type": "Operation",
+      "left": {
+        "_type": "Variable",
+        "name": "amount",
+        "domain": "INTEGER"
+      },
+      "op": {
+        "_type": "Operator",
+        "symbol": ">"
+      },
+      "right": {
+        "_type": "Constant",
+        "value": 0,
+        "domain": "INTEGER"
+      }
+    },
+    "op": {
+      "_type": "Operator",
+      "symbol": "&"
+    },
+    "right": {
+      "_type": "Operation",
+      "left": {
+        "_type": "Variable",
+        "name": "score",
+        "domain": "INTEGER"
+      },
+      "op": {
+        "_type": "Operator",
+        "symbol": "<"
+      },
+      "right": {
+        "_type": "Constant",
+        "value": 80,
+        "domain": "INTEGER"
+      }
+    }
+  },
+  "op": {
+    "_type": "Operator",
+    "symbol": "&"
+  },
+  "right": {
+    "_type": "Operation",
+    "left": {
+      "_type": "Variable",
+      "name": "score",
+      "domain": "INTEGER"
+    },
+    "op": {
+      "_type": "Operator",
+      "symbol": "<"
+    },
+    "right": {
+      "_type": "Constant",
+      "value": 50,
+      "domain": "INTEGER"
+    }
+  }
+}

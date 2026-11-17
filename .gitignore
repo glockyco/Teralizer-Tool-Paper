@@ -1,0 +1,9 @@
+# LaTeX build output, see .latexmkrc
+/build/
+
+# Working copy and logs of demo/run.sh
+/demo/work/
+/demo/*.log
+
+# Working documents for reviews and decisions
+/.agent-build/

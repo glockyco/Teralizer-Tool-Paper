@@ -1,0 +1,12 @@
+ line |               mutator               | original_suite | generalized_suite |                    killed_by                    
+------+-------------------------------------+----------------+-------------------+-------------------------------------------------
+    7 | ConditionalsBoundaryMutator         | SURVIVED       | SURVIVED          | 
+    7 | RemoveConditionalMutator_ORDER_ELSE | SURVIVED       | SURVIVED          | 
+    8 | ConditionalsBoundaryMutator         | SURVIVED       | KILLED            | _LoanPolicyTest_Generalized_fullApproval_2_Test
+    8 | PrimitiveReturnsMutator             | KILLED         | KILLED            | LoanPolicyTest
+    8 | RemoveConditionalMutator_ORDER_ELSE | KILLED         | KILLED            | LoanPolicyTest
+    9 | ConditionalsBoundaryMutator         | SURVIVED       | SURVIVED          | 
+    9 | PrimitiveReturnsMutator             | KILLED         | KILLED            | LoanPolicyTest
+    9 | RemoveConditionalMutator_ORDER_ELSE | KILLED         | KILLED            | LoanPolicyTest
+(8 rows)
+

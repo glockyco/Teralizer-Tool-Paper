@@ -1,0 +1,5 @@
+ build_system | test_framework |             tool_git_version             | runtime_seconds 
+--------------+----------------+------------------------------------------+-----------------
+ MAVEN        | JUNIT_5        | a6b932feaba1c990b30edf2177bc959613df16e2 |             100
+(1 row)
+

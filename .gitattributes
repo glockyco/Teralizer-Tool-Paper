@@ -1,0 +1,3 @@
+# The demo runs in a Linux container, so its sources and scripts keep LF line endings.
+* text=auto eol=lf
+*.pdf binary

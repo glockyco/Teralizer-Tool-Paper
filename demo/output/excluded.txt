@@ -1,0 +1,5 @@
+ test_method_name |    exclusion_info    |      widening_refusal_code       
+------------------+----------------------+----------------------------------
+ partialApproval  | ORACLE_NOT_WIDENABLE | NULL_CONCRETE_OUTPUT_NOT_LITERAL
+(1 row)
+

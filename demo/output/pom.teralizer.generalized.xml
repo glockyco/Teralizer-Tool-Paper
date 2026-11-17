@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">  
+  <modelVersion>4.0.0</modelVersion>  
+  <groupId>bank</groupId>  
+  <artifactId>loan</artifactId>  
+  <version>1.0-SNAPSHOT</version>  
+  <properties> 
+    <maven.compiler.source>1.8</maven.compiler.source>  
+    <maven.compiler.target>1.8</maven.compiler.target>  
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> 
+  </properties>  
+  <dependencies> 
+    <dependency> 
+      <groupId>org.junit.jupiter</groupId>  
+      <artifactId>junit-jupiter</artifactId>  
+      <version>5.11.0</version>  
+      <scope>test</scope> 
+    </dependency>  
+    <dependency> 
+      <!--Added by Teralizer.-->  
+      <groupId>org.pitest</groupId>  
+      <artifactId>pitest-junit5-plugin</artifactId>  
+      <version>1.2.1</version>  
+      <scope>test</scope> 
+    </dependency>  
+    <dependency> 
+      <!--Added by Teralizer.-->  
+      <groupId>net.jqwik</groupId>  
+      <artifactId>jqwik</artifactId>  
+      <version>1.8.5</version>  
+      <scope>test</scope> 
+    </dependency> 
+  </dependencies>  
+  <build> 
+    <!--Added by Teralizer.-->  
+    <plugins> 
+      <!--Added by Teralizer.-->  
+      <plugin> 
+        <!--Added by Teralizer.-->  
+        <groupId>org.jacoco</groupId>  
+        <artifactId>jacoco-maven-plugin</artifactId>  
+        <version>0.8.12</version>  
+        <executions> 
+          <execution> 
+            <id>prepare-agent</id>  
+            <goals> 
+              <goal>prepare-agent</goal> 
+            </goals> 
+          </execution> 
+        </executions> 
+      </plugin>  
+      <plugin> 
+        <!--Added by Teralizer.-->  
+        <groupId>org.pitest</groupId>  
+        <artifactId>pitest-maven</artifactId>  
+        <version>1.17.0</version>  
+        <configuration> 
+          <outputFormats> 
+            <outputFormat>HTML</outputFormat>  
+            <outputFormat>XML</outputFormat> 
+          </outputFormats>  
+          <exportLineCoverage>true</exportLineCoverage>  
+          <verbose>false</verbose>  
+          <!-- PIT's macos_focus feature adds -Djava.awt.headless=true to every minion to stop the
+             minion taking keyboard focus. A test that needs a display then fails without mutation,
+             and PIT refuses the whole project for a suite that does not pass, so the feature is off.
+             The apple.awt.UIElement jvmArg below keeps the minions out of the Dock and stops them
+             activating, which is the part we wanted, without making them headless. -->  
+          <extraFeatures> 
+            <extraFeature>-macos_focus</extraFeature> 
+          </extraFeatures>  
+          <!-- PIT substitutes properties in surefire's argLine itself and does not implement
+             Maven's @{...} late replacement, so the JaCoCo token we merge for surefire would
+             reach the coverage minion literally and kill it. Our jvmArgs below are unaffected. -->  
+          <parseSurefireArgLine>false</parseSurefireArgLine>  
+          <!-- Safe parallelism: each mutant runs in its own minion JVM. -->  
+          <threads>4</threads>  
+          <jvmArgs> 
+            <jvmArg>-Dteralizer.jqwik.diagnosticsMode=IN_MEMORY_ONLY</jvmArg>  
+            <jvmArg>-Dapple.awt.UIElement=true</jvmArg> 
+          </jvmArgs>  
+          <targetClasses>
+            <!--Added by Teralizer.-->
+            <param>bank.LoanPolicy</param>
+          </targetClasses>
+          <targetTests>
+            <!--Added by Teralizer.-->
+            <param>bank.LoanPolicyTest</param>
+            <param>bank._LoanPolicyTest_Generalized_fullApproval_2_Test</param>
+            <param>bank._LoanPolicyTest_Generalized_rejection_1_Test</param>
+          </targetTests>
+        </configuration> 
+      </plugin> 
+    </plugins> 
+  </build> 
+</project>
